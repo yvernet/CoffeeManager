@@ -9,7 +9,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/CoffeeManager', function(err){
+var mongodbUri = process.env.MONGOLAB_URI || 'mongodb://localhost/CoffeeManager';
+mongoose.connect(mongodbUri, function(err){
    if(err){
        console.log('Connection error', err);
    } else{
