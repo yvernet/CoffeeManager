@@ -13,8 +13,7 @@ cmControllers.controller('userListCtrl', ['$scope', '$window', 'User',
 
         // Datas
         $scope.userList = User.query();
-        $scope.drinks = ["Café", "Décafeiné", "Thé"];
-
+        $scope.drinks = ["Café", "Décaféiné", "Thé"];
 
         $scope.isOrdering = false;
         $scope.nbUserSelected = 0;
