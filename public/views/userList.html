@@ -41,9 +41,11 @@
                 <h4 class="modal-title">Changer la boisson par default</h4>
             </div>
             <div class="modal-body">
-                <p ng-repeat="drinkName in drinks">
-                    <input type="radio" id="{{drinkName}}" name="radioFavDrink" ng-model="currentUser.favDrink" ng-value="drinkName" ng-checked="drinkName == currentUSer.favDrink"> {{drinkName}}
-                </p>
+                <form novalidate>
+                    <p ng-repeat="drinkName in drinks">
+                        <label><input type="radio" id="{{drinkName}}" name="radioFavDrink" ng-model="currentUser.favDrink" ng-value="drinkName" ng-checked="drinkName == currentUser.favDrink"> {{drinkName}}</label>
+                    </p>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Valider</button>
