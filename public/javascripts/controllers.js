@@ -10,31 +10,10 @@ var cmControllers = angular.module('cmControllers', []);
 
 cmControllers.controller('userListCtrl', ['$scope', '$window', 'User',
     function($scope, $window, User) {
-        /*
-        $scope.userList = [
-            {
-                "name": "Yann",
-                "favDrink": "Décafeïné"
-            },
-            {
-                "name": "Florence",
-                "favDrink": "Café"
-            },
-            {
-                "name": "Thierry",
-                "favDrink": "Thé"
-            },
-            {
-                "name": "LeoGirl",
-                "favDrink": "Café"
-            }
-        ];
-*/
 
         // Datas
         $scope.userList = User.query();
         $scope.drinks = ["Café", "Décafeiné", "Thé"];
-
 
 
         $scope.isOrdering = false;
@@ -95,4 +74,70 @@ cmControllers.controller('userListCtrl', ['$scope', '$window', 'User',
             $scope.userList.push(user);
         };
 
-    }]);
+    }
+]);
+
+cmControllers.controller('loginCtrl', ['$scope', 'AuthentService',
+    function($scope, AuthentService){
+
+        //////////
+        // Data //
+        //////////
+
+        $scope.userLogin = 'Yann';
+        $scope.userPassword = 'test';
+
+        ///////////////
+        // Functions //
+        ///////////////
+
+        // Function to sign the user in
+        $scope.signin = function (login, password) {
+            console.log('Login in the controller with : ' + login + ' ' + password);
+            AuthentService.login(login, password)
+                .then(function (token) {
+                    // On success
+                    console.log('Login controller success : ' + token);
+                    $scope.setUserToken(token);
+                }, function(){
+                    // On failure
+                    console.log('Login controller failure');
+                    $scope.setUserToken('');
+                });
+        }
+    }
+]);
+
+cmControllers.controller('ApplicationController', ['$scope', 'AuthentService',
+    function ($scope, AuthentService) {
+
+        //////////
+        // Data //
+        //////////
+
+        // variable for global error messages
+        $scope.errorMessage = '';
+
+        // variable for userToken
+        $scope.userToken = '';
+
+        ///////////////
+        // Functions //
+        ///////////////
+
+        // Link to the isAuthenticated function from the AuthentService
+        $scope.isAuthenticated = AuthentService.isAuthenticated;
+
+
+        // Setter for errorMessage
+        $scope.setErrorMessage = function (message) {
+            $scope.errorMessage = message;
+        }
+
+        // Setter for userToken
+        $scope.setUserToken = function (token) {
+            $scope.userToken = token;
+        }
+
+    }
+]);

@@ -23,7 +23,7 @@
     <script src="/public/javascripts/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
 
 </head>
-<body>
+<body ng-controller="ApplicationController">
 <!--[if lt IE 8]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
@@ -38,15 +38,16 @@
             </button>
             <a class="navbar-brand" href=""><%= title %></a>
         </div>
+        <div class="navbar-text" ng-if="isAuthenticated()">Bonjour {{userToken}}</div>
         <div id="navbar" class="navbar-collapse collapse">
-            <form class="navbar-form navbar-right" role="form">
+            <form class="navbar-form navbar-right" role="form" ng-controller="loginCtrl" ng-submit="signin(userLogin, userPassword)">
                 <div class="form-group">
-                    <input type="text" placeholder="Email" class="form-control" disabled>
+                    <input type="text" placeholder="Login" class="form-control" ng-model="userLogin">
                 </div>
                 <div class="form-group">
-                    <input type="password" placeholder="Password" class="form-control" disabled>
+                    <input type="password" placeholder="Password" class="form-control" ng-model="userPassword">
                 </div>
-                <button type="submit" class="btn btn-success" disabled>Sign in</button>
+                <button type="submit" class="btn btn-success" ng-disabled="!userLogin || !userPassword">Log in</button>
             </form>
         </div><!--/.navbar-collapse -->
     </div>
@@ -54,6 +55,7 @@
 
 
 <div class="container">
+
 
     <div ng-view></div>
 
@@ -63,6 +65,24 @@
         <p>&copy; Damage Inc.</p>
     </footer>
 </div> <!-- /container -->
+
+
+<!-- Modal box for errors -->
+<div class="modal fade" id="modalboxError" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Erreur</h4>
+            </div>
+            <div class="modal-body">
+                <p>{{}}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

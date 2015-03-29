@@ -5,9 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
 var mongoose = require('mongoose');
 var mongodbUri = process.env.MONGOLAB_URI || 'mongodb://localhost/CoffeeManager';
 mongoose.connect(mongodbUri, function(err){
@@ -32,8 +29,24 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+
+// Index configuration
+var routes = require('./routes/index');
 app.use('/', routes);
-app.use('/api/users', users);
+
+// Passport initialization
+var passport = require('passport');
+require('./config/passport.js')(passport);
+app.use(passport.initialize());
+
+// User API configuration
+var usersRouter = express.Router();
+require('./routes/users')(usersRouter, passport);
+app.use('/api/users', usersRouter);
+
+// Login API configuration
+var loginRouter = require('./routes/login');
+app.use('/api/login', loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
