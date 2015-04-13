@@ -21,9 +21,19 @@ router.post('/', function(req, res, next) {
                 // if not, unauthorized response
                 res.status(401).json({message : "User not authorized"});
             }else{
-                // if yes, generate a token and send it back to the requester
-                var token = {token : "fehrzumfhrzulfhmu"};
-                res.json(token);
+                console.log(user);
+                // if yes, generate a token and send it back to the requester with useful user info
+                var token = "fehrzumfhrzulfhmu";
+                var resultUser = {};
+                resultUser.id = user._id;
+                resultUser.name = user.name;
+                resultUser.email = user.email;
+                resultUser.favDrink = user.favDrink;
+                resultUser.token = token;
+
+                console.log(resultUser);
+
+                res.json(resultUser);
             }
 
         });

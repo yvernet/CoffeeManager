@@ -8,12 +8,13 @@
 
 var cmControllers = angular.module('cmControllers', []);
 
-cmControllers.controller('userListCtrl', ['$scope', '$window', 'User',
+cmControllers.controller('UserListCtrl', ['$scope', '$window', 'User',
     function($scope, $window, User) {
 
-        // Datas
+        //////////
+        // Data //
+        //////////
         $scope.userList = User.query();
-        $scope.drinks = ["Café", "Décaféiné", "Thé"];
 
         $scope.isOrdering = false;
         $scope.nbUserSelected = 0;
@@ -26,6 +27,9 @@ cmControllers.controller('userListCtrl', ['$scope', '$window', 'User',
             }
         };
 
+        ///////////////
+        // Functions //
+        ///////////////
         $scope.selectUser = function(user){
             $scope.nbUserSelected += 1;
             user.isChecked = true;
@@ -76,7 +80,7 @@ cmControllers.controller('userListCtrl', ['$scope', '$window', 'User',
     }
 ]);
 
-cmControllers.controller('loginCtrl', ['$scope', 'AuthentService',
+cmControllers.controller('LoginCtrl', ['$scope', 'AuthentService',
     function($scope, AuthentService){
 
         //////////
@@ -94,15 +98,29 @@ cmControllers.controller('loginCtrl', ['$scope', 'AuthentService',
         $scope.signin = function (login, password) {
             console.log('Login in the controller with : ' + login + ' ' + password);
             AuthentService.login(login, password)
-                .then(function (token) {
+                .then(function (userInfo) {
                     // On success
-                    console.log('Login controller success : ' + token);
-                    $scope.setUserToken(token);
+                    console.log('Login controller success for : ' + userInfo.name);
+                    $scope.setUserInfo(userInfo);
                 }, function(){
                     // On failure
                     console.log('Login controller failure');
-                    $scope.setUserToken('');
+                    $scope.setUserInfo(null);
+                    $scope.error = {message : 'Erreur de login ou de password'};
                 });
+        }
+
+        $scope.signout = function () {
+            console.log('Signing out');
+
+            // ask the AuthentService to log out
+            AuthentService.logout();
+
+            // reset the current logged user
+            $scope.setUserInfo(null);
+
+            // clean any possible error
+            $scope.error = null;
         }
     }
 ]);
@@ -115,10 +133,14 @@ cmControllers.controller('ApplicationController', ['$scope', 'AuthentService',
         //////////
 
         // variable for global error messages
-        $scope.errorMessage = '';
+        $scope.error = {message : null};
 
         // variable for userToken
-        $scope.userToken = '';
+        $scope.userInfo = null;
+
+        // FIXME A mettre en constant angular
+        // List of available drinks
+        $scope.DRINKS = ["Café", "Décaféiné", "Thé"];
 
         ///////////////
         // Functions //
@@ -130,13 +152,50 @@ cmControllers.controller('ApplicationController', ['$scope', 'AuthentService',
 
         // Setter for errorMessage
         $scope.setErrorMessage = function (message) {
-            $scope.errorMessage = message;
+            $scope.error.message = message;
         }
 
         // Setter for userToken
-        $scope.setUserToken = function (token) {
-            $scope.userToken = token;
+        $scope.setUserInfo = function (user) {
+            $scope.userInfo = user;
         }
 
     }
 ]);
+
+cmControllers.controller('UserProfileCtrl', ['$scope', '$location', 'User',
+    function ($scope, $location, User) {
+
+        //////////
+        // Data //
+        //////////
+        // Hard copy of the userInfo Object to avoid unwanted modifications
+        $scope.currentUserInfo = angular.copy($scope.userInfo);
+
+
+        ///////////////
+        // Functions //
+        ///////////////
+
+        $scope.modifyUserProfile = function(){
+            console.log($scope.currentUserInfo);
+
+            // save the user on backend side
+            User.update($scope.currentUserInfo);
+
+            // update userInfo in the main controller
+            $scope.setUserInfo($scope.currentUserInfo);
+
+            // go back to user list
+            $location.path('/');
+        };
+
+        $scope.cancelModifyUserProfile = function () {
+            // go back to user list
+            $location.path('/');
+        }
+
+    }
+]);
+
+

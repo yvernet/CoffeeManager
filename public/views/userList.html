@@ -42,7 +42,7 @@
             </div>
             <div class="modal-body">
                 <form novalidate>
-                    <p ng-repeat="drinkName in drinks">
+                    <p ng-repeat="drinkName in DRINKS">
                         <label><input type="radio" id="{{drinkName}}" name="radioFavDrink" ng-model="currentUser.favDrink" ng-value="drinkName" ng-checked="drinkName == currentUser.favDrink"> {{drinkName}}</label>
                     </p>
                 </form>

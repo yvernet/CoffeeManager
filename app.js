@@ -29,10 +29,6 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname, 'public', 'favicons', 'favicon.ico')));
 
 
-// Index configuration
-var routes = require('./routes/index');
-app.use('/', routes);
-
 // Passport initialization
 var passport = require('passport');
 require('./config/passport.js')(passport);
@@ -46,6 +42,11 @@ app.use('/api/users', usersRouter);
 // Login API configuration
 var loginRouter = require('./routes/login');
 app.use('/api/login', loginRouter);
+
+// Index configuration
+app.use('*', function(req, res) {
+    res.sendfile('./index.html');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
