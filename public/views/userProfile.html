@@ -7,50 +7,47 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
-        <form name="myForm" novalidate>
-            <div class="form-group">
-                <label for="inputName">Nom / Pseudo</label>
-                <input type="text" name="name" class="form-control" id="inputName" placeholder="Nom / Pseudo" ng-model="currentUserInfo.name" maxlength="10" required>
-                <div class="text-danger" ng-messages="myForm.name.$error">
-                    <div ng-message="required">Le nom est obligatoire.</div>
+<form name="myForm" novalidate>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+                <div class="form-group">
+                    <label for="inputName">Nom / Pseudo</label>
+                    <input type="text" name="name" class="form-control" id="inputName" placeholder="Nom / Pseudo" ng-model="currentUserInfo.name" maxlength="10" required>
+                    <div class="text-danger" ng-messages="myForm.name.$error">
+                        <div ng-message="required">Le nom est obligatoire.</div>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="inputEmail">Adresse mail</label>
-                <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Adresse email" ng-model="currentUserInfo.email" required>
-                <div class="text-danger" ng-messages="myForm.email.$error">
-                    <div ng-message="required">L'addresse email est obligatoire.</div>
-                    <div ng-message="email">L'adresse email est invalide.</div>
+                <div class="form-group">
+                    <label for="inputEmail">Adresse mail</label>
+                    <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Adresse email" ng-model="currentUserInfo.email" required>
+                    <div class="text-danger" ng-messages="myForm.email.$error">
+                        <div ng-message="required">L'addresse email est obligatoire.</div>
+                        <div ng-message="email">L'adresse email est invalide.</div>
+                    </div>
                 </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <label>Boisson favorite</label>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <label>Boisson favorite</label>
+                    </div>
+                    <div class="panel-body">
+                        <p ng-repeat="drinkName in DRINKS">
+                            <label for="{{drinkName}}"><input type="radio" id="{{drinkName}}" name="radioFavDrink" ng-model="currentUserInfo.favDrink" ng-value="drinkName" ng-checked="drinkName == currentUserInfo.favDrink"> {{drinkName}}</label>
+                        </p>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <p ng-repeat="drinkName in DRINKS">
-                        <label for="{{drinkName}}"><input type="radio" id="{{drinkName}}" name="radioFavDrink" ng-model="currentUserInfo.favDrink" ng-value="drinkName" ng-checked="drinkName == currentUserInfo.favDrink"> {{drinkName}}</label>
-                    </p>
-                </div>
-            </div>
-
-        </form>
+        </div>
     </div>
-</div>
 
-<div class="row">
-&nbsp;
-</div>
-
-<div class="row">
-    <div class="col-md-2 col-md-offset-6">
-        <button type="button" class="btn btn-default" ng-show="true" ng-click="cancelModifyUserProfile()">Annuler</button>
-        <button type="button" class="btn btn-success pull-right" ng-show="true" ng-click="modifyUserProfile()">Valider</button>
+    <div class="row">
+    &nbsp;
     </div>
-</div>
 
-<div class="row" ng-hide="true">
-    <textarea rows="5" cols="100">{{currentUser}}</textarea>
-</div>
+    <div class="row">
+        <div class="col-md-2 col-md-offset-6">
+            <button type="button" class="btn btn-default" ng-click="cancelModifyUserProfile()">Annuler</button>
+            <button type="button" class="btn btn-success pull-right" ng-disabled="myForm.$pristine || myForm.$invalid" ng-click="modifyUserProfile()">Valider</button>
+        </div>
+    </div>
+
+</form>
+

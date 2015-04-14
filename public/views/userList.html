@@ -79,16 +79,28 @@
             <div class="modal-header">
                 <h4 class="modal-title">Ajouter un invité</h4>
             </div>
-            <div class="modal-body">
-                Nom : <input type="text" ng-model="currentUser.name">
-                <p ng-repeat="drinkName in drinks">
-                    <input type="radio" id="{{drinkName}}" name="radioFavDrink" ng-model="currentUser.favDrink" ng-value="drinkName" ng-checked="drinkName == currentUSer.favDrink"> {{drinkName}}
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="addGuestToList(currentUser)">Valider</button>
-            </div>
+            <form name="myForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputName">Nom / Pseudo</label>
+                        <input type="text" id="inputName" ng-model="currentUser.name">
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <label>Boisson favorite</label>
+                        </div>
+                        <div class="panel-body">
+                            <p ng-repeat="drinkName in DRINKS">
+                                <label><input type="radio" id="{{drinkName}}" name="radioFavDrink" ng-model="currentUser.favDrink" ng-value="drinkName" ng-checked="drinkName == currentUSer.favDrink"> {{drinkName}}</label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-disabled="myForm.$pristine || myForm.$invalid" ng-click="addGuestToList(currentUser)">Valider</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
